@@ -9,6 +9,11 @@ using Random = UnityEngine.Random;
 
 public class NPC : Entity {
     
+    // -- Constants --
+    private const int BULLET_LAYER = 12;
+    private const int BLOCKING_LAYER = 8;
+    private const int ACTOR_LAYER = 9;
+    
     // -- Variables --
     public float repeatMovementRate = 5;
     public float interpolationPeriod = 1;
@@ -71,13 +76,13 @@ public class NPC : Entity {
     // -- Public Methods --
     void OnCollisionEnter2D(Collision2D other) {
         // If layer is a bullet
-        if (other.gameObject.layer == 12) {
+        if (other.gameObject.layer == BULLET_LAYER) {
             wasShot = true;
             shotPosition = other.contacts[0].point;
             health -= damage;
 
         // if layer is blocking or an actor
-        } else if (other.gameObject.layer == 8 || other.gameObject.layer == 9) {
+        } else if (other.gameObject.layer == BLOCKING_LAYER || other.gameObject.layer == ACTOR_LAYER) {
             CalculateMovement();
         }
     }
