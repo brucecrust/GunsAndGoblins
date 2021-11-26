@@ -7,6 +7,7 @@ public class Neutral : NPC {
     
     // -- Variables --
     public float deleteBlurbTime = 2;
+    public float deleteBlurbTextOffset = 0.05f;
 
     // -- Components --
     private Image activeBlurb;
@@ -14,27 +15,25 @@ public class Neutral : NPC {
     public GameObject blurbParent;
     public Image blurbOuch;
 
-    private void Start() {
+    protected override void Start() {
         InvokeRepeating("CalculateMovement", 0, repeatMovementRate);
+        base.Start();
     }
 
     // Update is called once per frame
-    void FixedUpdate() {
-        if (activeBlurb != null) SetBlurbPosition();
-        
-        if (wasShot) {
-            WasShot();
-        }
-        
-        if (standStill) return;
-        
-        Move();
+    protected override void FixedUpdate() {
         Kill();
+        SetBlurbPosition();
+
+        if (wasShot) WasShot();
+        if (standStill) return;
+        if (IsAlive()) Move();
     }
 
     // -- Utility Methods --
 
     protected override void WasShot() {
+        Kill();
         if (!printedBlood) PrintBlood();
 
         standStill = true;
@@ -43,7 +42,7 @@ public class Neutral : NPC {
         CalculateTime();
     }
     
-    private void PrintBlood() {
+    protected override void PrintBlood() {
         base.PrintBlood();
         PrintOuchBlurb();
     }
@@ -56,16 +55,24 @@ public class Neutral : NPC {
         
         SetBlurbPosition();
 
-        foreach (Transform child in activeBlurb.transform) {
-            // Delete children first
-            Destroy(child.gameObject, deleteBlurbTime - 0.1f);
-        }
-        Destroy(activeBlurb, deleteBlurbTime);
+        DeleteBlurb();
     }
 
     private void SetBlurbPosition() {
+        if (activeBlurb == null) return;
+        
         Vector2 viewportPoint = camera.WorldToViewportPoint(blurbParent.transform.position);
         activeBlurb.GetComponent<RectTransform>().anchorMin = viewportPoint;  
         activeBlurb.GetComponent<RectTransform>().anchorMax = viewportPoint;
+    }
+
+    private void DeleteBlurb() {
+        var textDeleteTime = deleteBlurbTime - deleteBlurbTextOffset;
+
+        foreach (Transform child in activeBlurb.transform) {
+            // Delete children first
+            Destroy(child.gameObject, textDeleteTime);
+        }
+        Destroy(activeBlurb, deleteBlurbTime);
     }
 }

@@ -24,4 +24,12 @@ public class Entity : MonoBehaviour {
 
     // -- Utility Methods --
     protected virtual void Move() {}
+
+    protected virtual bool IsAlive() {
+        return health > 0;
+    }
+
+    protected virtual void Kill() {
+        Destroy(gameObject);
+    }
 }
