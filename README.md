@@ -7,4 +7,4 @@ My goal is to create a single, fun and exciting level that will explore many dif
 
 Code can be found within `Assets/Scripts`. The logic divided into component classes, for use with the Unity Component system. Artwork and Code are free to use, commercially or otherwise. Though, some of the artwork – namely the "Atlas" file – is not mine, and was sourced from [0x72's website](https://0x72.itch.io/16x16-dungeon-tileset?download).
 
-![Gameplay](https://gfycat.com/miserablesoupygyrfalcon.gif)
+![Gameplay](https://media4.giphy.com/media/YD4iP6hXDqSbwIsSqB/giphy.gif?cid=790b7611d70e3cd16c7df318011b597b8ba13da531c2462e&rid=giphy.gif&ct=g)
