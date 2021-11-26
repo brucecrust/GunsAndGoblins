@@ -6,9 +6,9 @@ using UnityEngine;
 public class Entity : MonoBehaviour {
 
     // -- Variables --
-    public float health;
-    public float damage;
-    public float speed;
+    public float health = 100;
+    public float damage = 10;
+    public float speed = 0.3f;
 
     // -- Components --
     protected Canvas canvas;

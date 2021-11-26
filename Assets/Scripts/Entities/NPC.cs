@@ -18,53 +18,33 @@ public class NPC : Entity {
     public float repeatMovementRate = 5;
     public float interpolationPeriod = 1;
     public float deletePrefabTime = 3;
-    public float deleteBlurbTime = 2;
     public float bloodVariance = 0.1f;
-    public float defaultBlurbOffset = 0.15f;
 
     private float time = 0.0f;
 
-    private bool moveRight;
-    private bool moveUp;
-    private bool standStill = false;
-    private bool wasShot = false;
-    private bool printedBlood = false;
+    protected bool moveRight;
+    protected bool moveUp;
+    protected bool standStill = false;
+    protected bool wasShot = false;
+    protected bool printedBlood = false;
     
     private Vector3 shotPosition = Vector3.zero;
     
     // -- Components --
-    private Image activeBlurb;
-    
     public GameObject bloodPrefab;
     public GameObject cloudPrefab;
-    public GameObject blurbParent;
-    public Image blurbOuch;
 
     private void Start() {
         health = 100;
         damage = 10;
-        
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        
+
         InvokeRepeating("CalculateMovement", 0, repeatMovementRate);
     }
 
     // Update is called once per frame
-    void FixedUpdate() {
-        if (activeBlurb != null) SetBlurbPosition();
-        
+    public void FixedUpdate() {
         if (wasShot) {
-            if (!printedBlood) PrintBlood();
-
-            standStill = true;
-            moveRight = false;
-            
-            // Initiate timer; 
-            time += Time.fixedDeltaTime;
-            
-            CalculateTime();
+            WasShot();
         }
         
         if (standStill) return;
@@ -106,11 +86,11 @@ public class NPC : Entity {
     }
     
     // -- Utility Methods --
-    private void Rotate() {
+    protected void Rotate() {
         transform.localScale = moveRight ? Vector3.one : new Vector3(-1, 1, 1);
     }
 
-    private void CalculateMovement() {
+    protected void CalculateMovement() {
         // If 0, move right; if 1, move left; if 2, move up; if 3 move down; if 4, do nothing
         var movementDirection = Random.Range(0, 4);
         switch (movementDirection) {
@@ -137,7 +117,9 @@ public class NPC : Entity {
         }
     }
 
-    private void CalculateTime() {
+    protected void CalculateTime() {
+        time += Time.fixedDeltaTime;
+
         if (!(time >= interpolationPeriod)) return;
         
         time = time - interpolationPeriod;
@@ -147,40 +129,29 @@ public class NPC : Entity {
         CalculateMovement();
     }
 
-    private void PrintBlood() {
+    protected virtual void WasShot() {
+        if (!printedBlood) PrintBlood();
+
+        standStill = true;
+        moveRight = false;
+            
+        // Initiate timer; 
+        time += Time.fixedDeltaTime;
+            
+        CalculateTime();
+    }
+
+    protected void PrintBlood() {
         var positionVariant = new Vector3(Random.Range(0, bloodVariance), Random.Range(0, bloodVariance), 0);
         var blood = Instantiate(bloodPrefab, shotPosition + positionVariant, Quaternion.identity);
-        
-        PrintOuchBlurb();
-        
+
         blood.transform.parent = transform;
         printedBlood = true;
         
         Destroy(blood, deletePrefabTime);
     }
 
-    private void PrintOuchBlurb() {
-        if (activeBlurb != null) return;
-        
-        activeBlurb = Instantiate(blurbOuch, blurbParent.transform.position, Quaternion.identity);
-        activeBlurb.transform.SetParent(canvas.transform, false);
-        
-        SetBlurbPosition();
-
-        foreach (Transform child in activeBlurb.transform) {
-            // Delete children first
-            Destroy(child.gameObject, deleteBlurbTime - 0.1f);
-        }
-        Destroy(activeBlurb, deleteBlurbTime);
-    }
-
-    private void SetBlurbPosition() {
-        Vector2 viewportPoint = camera.WorldToViewportPoint(blurbParent.transform.position);
-        activeBlurb.GetComponent<RectTransform>().anchorMin = viewportPoint;  
-        activeBlurb.GetComponent<RectTransform>().anchorMax = viewportPoint;
-    }
-
-    private void Kill() {
+    protected void Kill() {
         if (health > 0) return;
         
         Destroy(Instantiate(cloudPrefab, transform.position, Quaternion.identity), deletePrefabTime);
