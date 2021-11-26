@@ -88,7 +88,6 @@ public class NPC : Entity {
     }
     
     // -- Parent Override Methods --
-    
     protected override void Move() {
         // Horizontal:
         if (moveRight && !moveUp) {
