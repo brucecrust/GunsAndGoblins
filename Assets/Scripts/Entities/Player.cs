@@ -94,6 +94,7 @@ public class Player : Entity {
     private void PrintBullet() {
         var prefab = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         var mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
+        prefab.GetComponent<Bullet>().damage = damage;
         prefab.GetComponent<Bullet>().moveDirection = mousePosition;
     }
 }

@@ -6,8 +6,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
     // -- Variables --
-    public float destroyTime = 0.25f;
-    public float bulletSpeed = 8.0f;
+    public float destroyTime = 0.3f;
+    public float bulletSpeed = 20;
+    public float damage;
     public Vector3 moveDirection = Vector3.zero;
 
     private void Start() {

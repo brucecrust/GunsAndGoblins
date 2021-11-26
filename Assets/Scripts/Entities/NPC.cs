@@ -29,20 +29,28 @@ public class NPC : Entity {
     protected bool printedBlood = false;
     
     private Vector3 shotPosition = Vector3.zero;
-    
+
     // -- Components --
     public GameObject bloodPrefab;
     public GameObject cloudPrefab;
 
-    private void Start() {
+    private GameObject sprite;
+
+    protected virtual void Start() {
         health = 100;
         damage = 10;
 
         InvokeRepeating("CalculateMovement", 0, repeatMovementRate);
+
+        foreach (Transform child in transform) {
+            if (child.GetComponent<SpriteRenderer>() != null) {
+                sprite = child.gameObject;
+            }
+        }
     }
 
     // Update is called once per frame
-    public void FixedUpdate() {
+    protected virtual void FixedUpdate() {
         if (wasShot) {
             WasShot();
         }
@@ -59,7 +67,7 @@ public class NPC : Entity {
         if (other.gameObject.layer == BULLET_LAYER) {
             wasShot = true;
             shotPosition = other.contacts[0].point;
-            health -= damage;
+            health -= other.gameObject.GetComponent<Bullet>().damage;
 
         // if layer is blocking or an actor
         } else if (other.gameObject.layer == BLOCKING_LAYER || other.gameObject.layer == ACTOR_LAYER) {
@@ -130,6 +138,8 @@ public class NPC : Entity {
     }
 
     protected virtual void WasShot() {
+        Kill();
+
         if (!printedBlood) PrintBlood();
 
         standStill = true;
@@ -141,7 +151,7 @@ public class NPC : Entity {
         CalculateTime();
     }
 
-    protected void PrintBlood() {
+    protected virtual void PrintBlood() {
         var positionVariant = new Vector3(Random.Range(0, bloodVariance), Random.Range(0, bloodVariance), 0);
         var blood = Instantiate(bloodPrefab, shotPosition + positionVariant, Quaternion.identity);
 
@@ -151,10 +161,17 @@ public class NPC : Entity {
         Destroy(blood, deletePrefabTime);
     }
 
-    protected void Kill() {
+    protected virtual GameObject PrintCloud() {
+        var prefab = Instantiate(cloudPrefab, transform.position, Quaternion.identity);
+        prefab.transform.parent = transform;
+        return prefab;
+    }
+
+    protected override void Kill() {
         if (health > 0) return;
         
-        Destroy(Instantiate(cloudPrefab, transform.position, Quaternion.identity), deletePrefabTime);
-        Destroy(gameObject);
+        Destroy(PrintCloud(), deletePrefabTime);
+        sprite.SetActive(false);
+        Destroy(gameObject, deletePrefabTime);
     }
 }
