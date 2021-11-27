@@ -10,7 +10,9 @@ public class Player : Entity {
     // -- Constants --
     private const int ENEMY_BULLET_LAYER = 15;
     
-    // -- Variables --;
+    // -- Variables --
+    public bool godMode = false;
+    
     private Vector3 moveDelta;
     private Vector3 jumpDelta;
     private float xMovement;
@@ -27,6 +29,7 @@ public class Player : Entity {
     
     // -- UI --
     public TextMeshProUGUI deathText;
+    public TextMeshProUGUI godModeText;
     public Slider healthBar;
 
     // Start is called before the first frame update
@@ -41,6 +44,8 @@ public class Player : Entity {
                 animator = child.GetComponent<Animator>();
             }
         }
+        
+        if (godMode) godModeText.gameObject.SetActive(true);
 
         SetHealthBar();
         UpdateHealthBar();
@@ -78,7 +83,7 @@ public class Player : Entity {
 
     protected override void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.layer == ENEMY_BULLET_LAYER) {
-            health -= other.gameObject.GetComponent<EnemyBullet>().damage;
+            if (!godMode) health -= other.gameObject.GetComponent<EnemyBullet>().damage;
         }
     }
 

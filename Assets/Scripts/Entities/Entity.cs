@@ -17,6 +17,8 @@ public class Entity : BlurbObject {
     public float interpolationPeriod = 1;
     public float speed = 0.3f;
 
+    public float initialHealth;
+    
     public Vector3 position;
 
     protected bool canJump = false;
@@ -41,6 +43,8 @@ public class Entity : BlurbObject {
     // -- Life Cycle Methods --
     protected override void Awake() {
         base.Awake();
+
+        initialHealth = health;
         
         rigidbody2D = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();

@@ -1,19 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+[Serializable]
+public struct Blurb {
+    public string name;
+    public Image blurb;
+}
 
 public class BlurbObject : WorldObject {
     
     // -- Variables --
     public float deleteBlurbTime = 2;
     public float deleteBlurbTextOffset = 0.05f;
+
+    protected bool printedBlurb;
     
     // -- Components --
-    public Image blurb;
+    public Blurb[] blurbs;
     public GameObject blurbParent; 
     
-    private Image activeBlurb;
+    protected Image activeBlurb;
     
     // -- Utility Methods --
     protected virtual void DeleteBlurb() {
@@ -25,6 +34,25 @@ public class BlurbObject : WorldObject {
         }
 
         Destroy(activeBlurb, deleteBlurbTime);
+    }
+
+    protected virtual Blurb GetBlurb(string name) {
+        foreach (Blurb blurb in blurbs) {
+            if (blurb.name == name) return blurb;
+        }
+
+        return default;
+    }
+
+    protected virtual void PrintBlurb(Blurb blurbToCreate) {
+        if (activeBlurb != null) return;
+        
+        activeBlurb = Instantiate(blurbToCreate.blurb, blurbParent.transform.position, Quaternion.identity);
+        activeBlurb.transform.SetParent(canvas.transform, false);
+        
+        SetBlurbPosition();
+
+        DeleteBlurb();
     }
     
     protected virtual void SetBlurbPosition() {
