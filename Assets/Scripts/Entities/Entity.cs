@@ -8,7 +8,7 @@ public class Entity : MonoBehaviour {
 
     // -- Constants --
     private const int BULLET_LAYER = 12;
-    
+
     // -- Variables --
     public float health = 100;
     public float damage = 10;
@@ -16,9 +16,9 @@ public class Entity : MonoBehaviour {
     public float interpolationPeriod = 1;
     public float deletePrefabTime = 3;
     public float bloodVariance = 0.1f;
-    
+
     public Vector3 position;
-    
+
     protected bool wasShot = false;
     protected bool printedBlood = false;
     protected bool standStill = false;
@@ -26,8 +26,8 @@ public class Entity : MonoBehaviour {
     private Vector3 shotPosition = Vector3.zero;
     protected List<GameObject> spawnedBlood = new List<GameObject>();
 
-    private float time = 0.0f;
-    
+    private float damageTimer = 0.0f;
+
     // -- Components --
     protected Canvas canvas;
     protected Camera camera;
@@ -43,7 +43,7 @@ public class Entity : MonoBehaviour {
         rigidbody2D = GetComponent<Rigidbody2D>();
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        
+
         boxCollider2D = GetComponent<BoxCollider2D>();
 
         foreach (Transform child in transform) {
@@ -55,11 +55,11 @@ public class Entity : MonoBehaviour {
 
     protected virtual void FixedUpdate() {
         UpdatePosition();
-        
+
         if (wasShot) {
             WasShot();
         }
-        
+
         Kill();
     }
 
@@ -73,8 +73,8 @@ public class Entity : MonoBehaviour {
     }
 
     // -- Utility Methods --
-    protected virtual void Move() {}
-    
+    protected virtual void Move() { }
+
     protected virtual void WasShot() {
         Kill();
 
@@ -88,27 +88,30 @@ public class Entity : MonoBehaviour {
     protected virtual bool IsAlive() {
         return health > 0;
     }
-    
-    protected virtual void CalculateTime() {
-        time += Time.fixedDeltaTime;
 
-        if (!(time >= interpolationPeriod)) return;
+    protected virtual void CalculateTime() {
+        bool interpolatedPeriodReached = damageTimer >= interpolationPeriod;
         
-        time = time - interpolationPeriod;
+        damageTimer += Time.fixedDeltaTime;
+
+        if (!interpolatedPeriodReached) return;
+
+        damageTimer -= interpolationPeriod;
+        
         wasShot = false;
         printedBlood = false;
         standStill = false;
     }
-    
+
     protected virtual void PrintBlood() {
         var positionVariant = new Vector3(Random.Range(0, bloodVariance), Random.Range(0, bloodVariance), 0);
         var blood = Instantiate(bloodPrefab, shotPosition + positionVariant, Quaternion.identity);
 
         spawnedBlood.Add(blood);
-        
+
         blood.transform.parent = transform;
         printedBlood = true;
-        
+
         Destroy(blood, deletePrefabTime);
     }
 
@@ -124,13 +127,13 @@ public class Entity : MonoBehaviour {
         foreach (var blood in spawnedBlood) {
             if (blood != null) Destroy(blood);
         }
-        
+
         Destroy(boxCollider2D);
         Destroy(PrintCloud(), deletePrefabTime);
         sprite.SetActive(false);
         Destroy(gameObject, deletePrefabTime);
     }
-    
+
     private void UpdatePosition() {
         position = transform.position;
     }

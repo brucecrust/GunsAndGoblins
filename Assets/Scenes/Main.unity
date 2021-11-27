@@ -30843,7 +30843,7 @@ MonoBehaviour:
   health: 100
   damage: 50
   speed: 0.75
-  interpolationPeriod: 1
+  interpolationPeriod: 2
   deletePrefabTime: 3
   bloodVariance: 0.1
   position: {x: 0, y: 0, z: 0}
@@ -30852,6 +30852,7 @@ MonoBehaviour:
   repeatMovementRate: 1.5
   projectileSpeed: 1
   maxProjectiles: 5
+  projectileTimer: 1
   projectilePrefab: {fileID: 424937998833629723, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
 --- !u!4 &728797271
 Transform:

@@ -8,6 +8,9 @@ public class Enemy : NPC {
     // -- Variables --
     public float projectileSpeed;
     public float maxProjectiles;
+    public float projectileTimer = 0.0f;
+
+    private bool shoot = false;
     
     // -- Components --
     public GameObject projectilePrefab;
@@ -16,7 +19,7 @@ public class Enemy : NPC {
     private List<GameObject> spawnedProjectiles = new List<GameObject>();
 
     // Start is called before the first frame update
-    void Start() {
+    protected override void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -24,11 +27,12 @@ public class Enemy : NPC {
     void Update() {
         RemoveProjectiles();
         MoveProjectiles();
+        CalculateTime();
     }
 
     private void OnTriggerStay2D(Collider2D other) {
         if (other.transform.CompareTag("Player")) {
-            if (CanPrintProjectile()) PrintProjectile();
+            if (CanPrintProjectile()) shoot = true;
         }
     }
 
@@ -55,5 +59,18 @@ public class Enemy : NPC {
 
     private void RemoveProjectiles() {
         if (spawnedProjectiles.Count > 0) spawnedProjectiles.RemoveAll(item => item == null);
+    }
+
+    protected override void CalculateTime() {
+        bool interpolatedPeriodReached = projectileTimer >= interpolationPeriod;
+        
+        projectileTimer += Time.fixedDeltaTime;
+        
+        if (!interpolatedPeriodReached) return;
+        if (shoot) PrintProjectile();
+        
+        projectileTimer -= interpolationPeriod;
+        
+        base.CalculateTime();
     }
 }

@@ -28,7 +28,7 @@ public class NPC : Entity {
     }
 
     // Update is called once per frame
-    protected virtual void FixedUpdate() {
+    protected override void FixedUpdate() {
         base.FixedUpdate();
 
         if (standStill) return;

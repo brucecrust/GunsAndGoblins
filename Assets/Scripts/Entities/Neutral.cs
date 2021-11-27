@@ -22,14 +22,12 @@ public class Neutral : NPC {
 
     // Update is called once per frame
     protected override void FixedUpdate() {
-        base.FixedUpdate();
-        
         Kill();
         SetBlurbPosition();
 
         if (wasShot) WasShot();
         if (standStill) return;
-        if (IsAlive()) Move();
+        base.FixedUpdate();
     }
 
     // -- Utility Methods --

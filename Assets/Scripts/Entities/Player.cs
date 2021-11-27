@@ -26,7 +26,7 @@ public class Player : Entity {
     }
     
     // Update is called once per frame
-    void FixedUpdate() {
+    protected override void FixedUpdate() {
         base.FixedUpdate();
         
         TrackMovement();
