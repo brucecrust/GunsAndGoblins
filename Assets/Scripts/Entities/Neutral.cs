@@ -10,10 +10,10 @@ public class Neutral : NPC {
     public float deleteBlurbTextOffset = 0.05f;
 
     // -- Components --
-    private Image activeBlurb;
-    
     public GameObject blurbParent;
     public Image blurbOuch;
+    
+    private Image activeBlurb;
 
     protected override void Start() {
         InvokeRepeating("CalculateMovement", 0, repeatMovementRate);
@@ -22,6 +22,8 @@ public class Neutral : NPC {
 
     // Update is called once per frame
     protected override void FixedUpdate() {
+        base.FixedUpdate();
+        
         Kill();
         SetBlurbPosition();
 
@@ -73,6 +75,7 @@ public class Neutral : NPC {
             // Delete children first
             Destroy(child.gameObject, textDeleteTime);
         }
+
         Destroy(activeBlurb, deleteBlurbTime);
     }
 }

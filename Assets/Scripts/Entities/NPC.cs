@@ -29,18 +29,23 @@ public class NPC : Entity {
     protected bool printedBlood = false;
     
     private Vector3 shotPosition = Vector3.zero;
+    private List<GameObject> spawnedBlood = new List<GameObject>();
 
     // -- Components --
     public GameObject bloodPrefab;
     public GameObject cloudPrefab;
 
     private GameObject sprite;
+    private BoxCollider2D boxCollider2D;
 
     protected virtual void Start() {
+        
         health = 100;
         damage = 10;
 
         InvokeRepeating("CalculateMovement", 0, repeatMovementRate);
+
+        boxCollider2D = GetComponent<BoxCollider2D>();
 
         foreach (Transform child in transform) {
             if (child.GetComponent<SpriteRenderer>() != null) {
@@ -51,13 +56,16 @@ public class NPC : Entity {
 
     // Update is called once per frame
     protected virtual void FixedUpdate() {
+        base.FixedUpdate();
+        
         if (wasShot) {
             WasShot();
         }
         
         if (standStill) return;
-        
-        Move();
+
+        ClearSpawnedBlood();
+        if (IsAlive()) Move();
         Kill();
     }
     
@@ -80,16 +88,16 @@ public class NPC : Entity {
         // Horizontal:
         if (moveRight && !moveUp) {
             Rotate();
-            rigidbody2D.MovePosition(transform.position + Vector3.right * (speed * Time.fixedDeltaTime));
+            rigidbody2D.MovePosition(position + Vector3.right * (speed * Time.fixedDeltaTime));
         } else if (!moveRight && !moveUp) {
             Rotate();
-            rigidbody2D.MovePosition(transform.position + Vector3.left * (speed * Time.fixedDeltaTime));
+            rigidbody2D.MovePosition(position + Vector3.left * (speed * Time.fixedDeltaTime));
             
             // Vertical:
         } else if (moveUp && !moveRight) {
-            rigidbody2D.MovePosition(transform.position + Vector3.up * (speed * Time.fixedDeltaTime));
+            rigidbody2D.MovePosition(position + Vector3.up * (speed * Time.fixedDeltaTime));
         } else if (!moveUp && !moveRight) {
-            rigidbody2D.MovePosition(transform.position + Vector3.down * (speed * Time.fixedDeltaTime));
+            rigidbody2D.MovePosition(position + Vector3.down * (speed * Time.fixedDeltaTime));
         }
     }
     
@@ -155,6 +163,8 @@ public class NPC : Entity {
         var positionVariant = new Vector3(Random.Range(0, bloodVariance), Random.Range(0, bloodVariance), 0);
         var blood = Instantiate(bloodPrefab, shotPosition + positionVariant, Quaternion.identity);
 
+        spawnedBlood.Add(blood);
+        
         blood.transform.parent = transform;
         printedBlood = true;
         
@@ -162,16 +172,27 @@ public class NPC : Entity {
     }
 
     protected virtual GameObject PrintCloud() {
-        var prefab = Instantiate(cloudPrefab, transform.position, Quaternion.identity);
+        var prefab = Instantiate(cloudPrefab, position, Quaternion.identity);
         prefab.transform.parent = transform;
         return prefab;
     }
 
     protected override void Kill() {
         if (health > 0) return;
+
+        foreach (var blood in spawnedBlood) {
+            if (blood != null) Destroy(blood);
+        }
         
+        Destroy(boxCollider2D);
         Destroy(PrintCloud(), deletePrefabTime);
         sprite.SetActive(false);
         Destroy(gameObject, deletePrefabTime);
+    }
+
+    private void ClearSpawnedBlood() {
+        foreach (var blood in spawnedBlood) {
+            if (blood == null) spawnedBlood.Remove(blood);
+        }
     }
 }

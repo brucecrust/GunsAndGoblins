@@ -24,16 +24,11 @@ public class Player : Entity {
     void Start() {
         animator = GetComponent<Animator>();
     }
-
-    void Update() {
-        TrackMovement();
-        var hasShot = Input.GetMouseButtonDown(0);
-
-        if (hasShot) PrintBullet();
-    }
-
+    
     // Update is called once per frame
     void FixedUpdate() {
+        base.FixedUpdate();
+        
         TrackMovement();
         
         // Assign input
@@ -49,6 +44,14 @@ public class Player : Entity {
         // Move player and weapon
         Move();
     }
+    
+    void Update() {
+        TrackMovement();
+        var hasShot = Input.GetMouseButtonDown(0);
+
+        if (hasShot) PrintBullet();
+    }
+
 
     // -- Parent Override Methods --
     protected override void Move() {
@@ -92,7 +95,7 @@ public class Player : Entity {
     }
 
     private void PrintBullet() {
-        var prefab = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        var prefab = Instantiate(bulletPrefab, position, Quaternion.identity);
         var mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
         prefab.GetComponent<Bullet>().damage = damage;
         prefab.GetComponent<Bullet>().moveDirection = mousePosition;

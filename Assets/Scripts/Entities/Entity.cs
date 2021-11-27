@@ -10,6 +10,8 @@ public class Entity : MonoBehaviour {
     public float damage = 10;
     public float speed = 0.3f;
 
+    public Vector3 position;
+
     // -- Components --
     protected Canvas canvas;
     protected Camera camera;
@@ -22,6 +24,10 @@ public class Entity : MonoBehaviour {
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
+    protected virtual void FixedUpdate() {
+        UpdatePosition();
+    }
+
     // -- Utility Methods --
     protected virtual void Move() {}
 
@@ -31,5 +37,9 @@ public class Entity : MonoBehaviour {
 
     protected virtual void Kill() {
         Destroy(gameObject);
+    }
+    
+    private void UpdatePosition() {
+        position = transform.position;
     }
 }
