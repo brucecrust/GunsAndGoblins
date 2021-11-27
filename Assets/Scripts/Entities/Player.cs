@@ -27,12 +27,14 @@ public class Player : Entity {
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         boxCollider2D = GetComponent<BoxCollider2D>();
+        
+        foreach (Transform child in transform) {
+            if (child.GetComponent<Animator>() != null) {
+                animator = child.GetComponent<Animator>();
+            }
+        }
     }
-    
-    void Start() {
-        animator = GetComponent<Animator>();
-    }
-    
+
     // Update is called once per frame
     protected override void FixedUpdate() {
         UpdatePosition();
