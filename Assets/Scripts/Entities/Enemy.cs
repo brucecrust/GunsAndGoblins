@@ -9,6 +9,7 @@ public class Enemy : NPC {
     public float projectileSpeed;
     public int maxProjectiles;
     public float projectileInterpolationPeriod = 3;
+    public float projectileRotation = 0.5f;
     
     private float projectileTimer = 0.0f;
     private float projectileWaitTimer = 0.0f;
@@ -63,6 +64,9 @@ public class Enemy : NPC {
                 projectile.transform.position = Vector3.MoveTowards(
                     projectile.transform.position, player.transform.position, 
                     projectileSpeed * Time.fixedDeltaTime);
+
+                var rotation = new Vector3(0, 0, projectileRotation);
+                projectile.transform.Rotate(rotation);
             }
         }
     }

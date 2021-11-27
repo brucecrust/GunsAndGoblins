@@ -30853,9 +30853,10 @@ MonoBehaviour:
   bloodPrefab: {fileID: 4391797801538248111, guid: 8a92215f2f9b15947842fcc78ce9723c, type: 3}
   cloudPrefab: {fileID: 5527735549709603703, guid: 1a8c65353f0cd0c42bcdb1d347671dfa, type: 3}
   repeatMovementRate: 1.5
-  projectileSpeed: 1
+  projectileSpeed: 0.3
   maxProjectiles: 3
   projectileInterpolationPeriod: 5
+  projectileRotation: 2
   projectilePrefab: {fileID: 424937998833629723, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
 --- !u!4 &728797271
 Transform:
