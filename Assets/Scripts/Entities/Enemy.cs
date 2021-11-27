@@ -6,8 +6,8 @@ using UnityEngine;
 public class Enemy : NPC {
     
     // -- Variables --
-    public float projectileSpeed;
-    public int maxProjectiles;
+    public float projectileSpeed = 0.3f;
+    public int maxProjectiles = 3;
     public float projectileInterpolationPeriod = 3;
     public float projectileRotation = 0.5f;
     
@@ -31,8 +31,6 @@ public class Enemy : NPC {
     // Update is called once per frame
     void Update() {
         RemoveProjectiles();
-        
-        if (IsAlive()) MoveProjectiles();
 
         if (numberOfProjectiles == maxProjectiles) {
             CalculateProjectileWait();
@@ -40,6 +38,8 @@ public class Enemy : NPC {
         } else {
             if (IsAlive()) CalculateTime();
         }
+        
+        if (IsAlive()) MoveProjectiles();
     }
 
     private void OnTriggerStay2D(Collider2D other) {
@@ -50,7 +50,6 @@ public class Enemy : NPC {
 
     // -- Utility Methods --
     private void PrintProjectile() {
-        Debug.Log($"Number of Projectiles: {numberOfProjectiles}");
         var prefab = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         prefab.GetComponent<EnemyBullet>().damage = damage;
         spawnedProjectiles.Add(prefab);
@@ -90,7 +89,6 @@ public class Enemy : NPC {
 
     private void CalculateProjectileWait() {
         bool interpolatedPeriodReached = projectileWaitTimer >= projectileInterpolationPeriod;
-        Debug.Log($"{projectileWaitTimer} / {projectileInterpolationPeriod}");
         projectileWaitTimer += Time.fixedDeltaTime;
         
         if (!interpolatedPeriodReached) return;
@@ -99,5 +97,15 @@ public class Enemy : NPC {
 
         canShoot = true;
         numberOfProjectiles = 0;
+    }
+
+    protected override void Kill() {
+        if (IsAlive()) return;
+        foreach (var projectile in spawnedProjectiles) {
+            Debug.Log("Delete projectile");
+            Destroy(projectile);
+        }
+        
+        base.Kill();
     }
 }

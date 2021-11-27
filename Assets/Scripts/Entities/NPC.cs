@@ -14,7 +14,7 @@ public class NPC : Entity {
     private const int ACTOR_LAYER = 9;
     
     // -- Variables --
-    public float repeatMovementRate = 5;
+    public float repeatMovementRate = 2;
 
     protected bool moveRight;
     protected bool moveUp;

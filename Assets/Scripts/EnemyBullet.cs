@@ -11,6 +11,7 @@ public class EnemyBullet : MonoBehaviour {
     // -- Utility Methods --
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.transform.CompareTag("Enemy")) return;
+        if (other.transform.CompareTag("Projectile")) return;
         Destroy(gameObject);
     }
 }
