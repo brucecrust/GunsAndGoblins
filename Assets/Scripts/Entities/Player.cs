@@ -19,15 +19,25 @@ public class Player : Entity {
     public GameObject backGun;
     public GameObject sideGun;
     public GameObject forwardGun;
+    public GameObject activeGun;
 
     // Start is called before the first frame update
+    protected override void Awake() {
+        rigidbody2D = GetComponent<Rigidbody2D>();
+        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+    }
+    
     void Start() {
         animator = GetComponent<Animator>();
     }
     
     // Update is called once per frame
     protected override void FixedUpdate() {
-        base.FixedUpdate();
+        UpdatePosition();
+
+        if (wasShot) WasShot();
         
         TrackMovement();
         
@@ -43,6 +53,8 @@ public class Player : Entity {
 
         // Move player and weapon
         Move();
+
+        Kill();
     }
     
     void Update() {
@@ -81,16 +93,22 @@ public class Player : Entity {
             sideGun.SetActive(false);
             backGun.SetActive(true);
             forwardGun.SetActive(false);
+
+            activeGun = backGun;
         } else if (moveDelta.y < 0) {
             animator.SetBool(animationName, false);
             sideGun.SetActive(false);
             backGun.SetActive(false);
             forwardGun.SetActive(true);
+
+            activeGun = forwardGun;
         } else {
             animator.SetBool(animationName, false);
             sideGun.SetActive(true);
             backGun.SetActive(false);
             forwardGun.SetActive(false);
+
+            activeGun = sideGun;
         }
     }
 
@@ -99,5 +117,13 @@ public class Player : Entity {
         var mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
         prefab.GetComponent<Bullet>().damage = damage;
         prefab.GetComponent<Bullet>().moveDirection = mousePosition;
+    }
+
+    protected virtual void Kill() {
+        if (!IsAlive()) {
+            Destroy(activeGun);
+            Destroy(this);
+        }
+        base.Kill();
     }
 }

@@ -20,4 +20,8 @@ public class Bullet : MonoBehaviour {
         var newPosition = new Vector3(moveDirection.x, moveDirection.y, 0) - transform.position;
         transform.Translate(newPosition * (bulletSpeed * Time.fixedDeltaTime));
     }
+
+    private void OnCollisionExit2D(Collision2D other) {
+        Destroy(gameObject);
+    }
 }

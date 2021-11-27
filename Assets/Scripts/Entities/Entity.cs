@@ -21,6 +21,7 @@ public class Entity : MonoBehaviour {
 
     protected bool wasShot = false;
     protected bool printedBlood = false;
+    protected bool printedCloud = false;
     protected bool standStill = false;
 
     private Vector3 shotPosition = Vector3.zero;
@@ -32,14 +33,14 @@ public class Entity : MonoBehaviour {
     protected Canvas canvas;
     protected Camera camera;
     protected Rigidbody2D rigidbody2D;
-    protected GameObject sprite;
     protected BoxCollider2D boxCollider2D;
-
+    
+    public GameObject sprite;
     public GameObject bloodPrefab;
     public GameObject cloudPrefab;
 
     // -- Life Cycle Methods --
-    private void Awake() {
+    protected virtual void Awake() {
         rigidbody2D = GetComponent<Rigidbody2D>();
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -56,10 +57,8 @@ public class Entity : MonoBehaviour {
     protected virtual void FixedUpdate() {
         UpdatePosition();
 
-        if (wasShot) {
-            WasShot();
-        }
-
+        if (wasShot) WasShot();
+        
         Kill();
     }
 
@@ -129,12 +128,15 @@ public class Entity : MonoBehaviour {
         }
 
         Destroy(boxCollider2D);
-        Destroy(PrintCloud(), deletePrefabTime);
+        if (!printedCloud) {
+            Destroy(PrintCloud(), deletePrefabTime);
+            printedCloud = true;
+        }
         sprite.SetActive(false);
         Destroy(gameObject, deletePrefabTime);
     }
 
-    private void UpdatePosition() {
+    protected virtual void UpdatePosition() {
         position = transform.position;
     }
 }
