@@ -73,7 +73,15 @@ public class Entity : BlurbObject {
         }
     }
 
-    // -- Utility Methods --.
+    // -- Utility Methods --
+    protected virtual void Heal() {
+        health = initialHealth;
+    }
+    
+    protected virtual void Heal(float amount) {
+        health += amount;
+    }
+    
     protected virtual bool IsAlive() {
         return health > 0;
     }

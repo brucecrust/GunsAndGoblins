@@ -12,9 +12,11 @@ public class Player : Entity {
     
     // -- Variables --
     public bool godMode = false;
-    
+    public float healTextInterpolationPeriod = 3;
+
+    private bool displayedHealText = false;
+    private float healTextTimer = 0.0f;
     private Vector3 moveDelta;
-    private Vector3 jumpDelta;
     private float xMovement;
     private float yMovement;
     
@@ -29,24 +31,21 @@ public class Player : Entity {
     
     // -- UI --
     public TextMeshProUGUI deathText;
+    public TextMeshProUGUI healText;
     public TextMeshProUGUI godModeText;
     public Slider healthBar;
 
     // Start is called before the first frame update
     protected override void Awake() {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
+        base.Awake();
         
         foreach (Transform child in transform) {
             if (child.GetComponent<Animator>() != null) {
                 animator = child.GetComponent<Animator>();
             }
         }
-        
-        if (godMode) godModeText.gameObject.SetActive(true);
 
+        AssessGodMode();
         SetHealthBar();
         UpdateHealthBar();
     }
@@ -70,6 +69,9 @@ public class Player : Entity {
     }
     
     void Update() {
+        AssessGodMode();
+        CalculateTime();
+        
         if (Input.GetKeyUp("space")) canJump = true;
         TrackMovement();
         AssignInput();
@@ -88,9 +90,50 @@ public class Player : Entity {
     }
 
     // -- Utility Methods --
+    private void ActivateGodMode() {
+        godModeText.gameObject.SetActive(true);
+    }
+
+    public void ActivateHealText() {
+        Debug.Log("Heal!");
+        healText.gameObject.SetActive(true);
+        displayedHealText = true;
+    }
+
+    private void AssessGodMode() {
+        if (godMode) ActivateGodMode();
+        else DeactivateGodMode();
+    }
+    
     private void AssignInput() {
         moveDelta = Vector3.zero;
         moveDelta = new Vector3(xMovement, yMovement, 0);
+    }
+
+    protected override void CalculateTime() {
+        bool interpolatedPeriodReached = healTextTimer >= healTextInterpolationPeriod;
+
+        if (displayedHealText) healTextTimer += Time.deltaTime;
+        
+        base.CalculateTime();
+        
+        if (!interpolatedPeriodReached) return;
+
+        healTextTimer -= healTextInterpolationPeriod;
+        DeactivateHealText();
+    }
+    
+    private void DeactivateGodMode() {
+        godModeText.gameObject.SetActive(false);
+    }
+
+    private void DeactivateHealText() {
+        healText.gameObject.SetActive(false);
+        displayedHealText = false;
+    }
+    
+    public void Heal() {
+        health = initialHealth;
     }
 
     protected override void Kill() {
@@ -149,18 +192,18 @@ public class Player : Entity {
         }
     }
 
+    private void SetHealthBar() {
+        healthBar.maxValue = health;
+        healthBar.minValue = 0;
+    }
+    
     private void TrackMovement() {
         // Track input
         xMovement = Input.GetAxisRaw("Horizontal");
         yMovement = Input.GetAxisRaw("Vertical");
     }
-    
+
     private void UpdateHealthBar() {
         healthBar.value = health;
-    }
-
-    private void SetHealthBar() {
-        healthBar.maxValue = health;
-        healthBar.minValue = 0;
     }
 }
