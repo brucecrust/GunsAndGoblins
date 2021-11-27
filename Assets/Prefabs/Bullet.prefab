@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyTime: 0.3
   bulletSpeed: 20
+  damage: 0
   moveDirection: {x: 0, y: 1, z: 0}
 --- !u!61 &5698888443255620920
 BoxCollider2D:
