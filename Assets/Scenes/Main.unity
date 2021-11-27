@@ -30899,6 +30899,7 @@ GameObject:
   m_Component:
   - component: {fileID: 808530880}
   - component: {fileID: 808530879}
+  - component: {fileID: 808530877}
   m_Layer: 11
   m_Name: Player_0
   m_TagString: Player
@@ -30906,6 +30907,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &808530877
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808530876}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 26f96f649924a5c4391b20b964ec916b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!212 &808530879
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31652,7 +31672,7 @@ GameObject:
   - component: {fileID: 1306713219}
   m_Layer: 11
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31750,6 +31770,7 @@ MonoBehaviour:
   backGun: {fileID: 1446720984}
   sideGun: {fileID: 1002847794}
   forwardGun: {fileID: 934962750}
+  activeGun: {fileID: 0}
 --- !u!4 &1306713223
 Transform:
   m_ObjectHideFlags: 0
@@ -31758,7 +31779,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306713218}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.47, y: -8.63, z: 0}
+  m_LocalPosition: {x: 0.02, y: -0.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 808530880}

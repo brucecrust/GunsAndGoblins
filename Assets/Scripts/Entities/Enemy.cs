@@ -51,6 +51,7 @@ public class Enemy : NPC {
     private void PrintProjectile() {
         Debug.Log($"Number of Projectiles: {numberOfProjectiles}");
         var prefab = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        prefab.GetComponent<EnemyBullet>().damage = damage;
         spawnedProjectiles.Add(prefab);
         Destroy(prefab, deletePrefabTime);
         numberOfProjectiles += 1;

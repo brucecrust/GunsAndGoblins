@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Player : Entity {
 
+    // -- Constants --
+    private int ENEMY_BULLET_LAYER = 15;
+    
     // -- Variables --;
     public float jump = 0;
 
@@ -66,8 +69,14 @@ public class Player : Entity {
         if (hasShot) PrintBullet();
     }
 
+    protected override void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.layer == ENEMY_BULLET_LAYER) {
+            health -= other.gameObject.GetComponent<EnemyBullet>().damage;
+        }
+        
+    }
 
-    // -- Parent Override Methods --
+    // -- Utility Methods --
     protected override void Move() {
         rigidbody2D.MovePosition(transform.position + moveDelta * (speed * Time.fixedDeltaTime));
     }
