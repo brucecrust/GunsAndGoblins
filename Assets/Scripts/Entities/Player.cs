@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,9 +11,8 @@ public class Player : Entity {
     private const int ENEMY_BULLET_LAYER = 15;
     
     // -- Variables --;
-    public float jump = 0;
-
     private Vector3 moveDelta;
+    private Vector3 jumpDelta;
     private float xMovement;
     private float yMovement;
     
@@ -23,9 +23,11 @@ public class Player : Entity {
     public GameObject backGun;
     public GameObject bulletPrefab;
     public GameObject forwardGun;
-    public Slider healthBar;
     public GameObject sideGun;
-
+    
+    // -- UI --
+    public TextMeshProUGUI deathText;
+    public Slider healthBar;
 
     // Start is called before the first frame update
     protected override void Awake() {
@@ -49,11 +51,6 @@ public class Player : Entity {
         UpdatePosition();
 
         if (wasShot) WasShot();
-        
-        TrackMovement();
-        
-        // Assign input
-        AssignInput();
 
         // Change Player animation direction
         ModifyAnimation();
@@ -68,6 +65,10 @@ public class Player : Entity {
     }
     
     void Update() {
+        if (Input.GetKeyUp("space")) canJump = true;
+        TrackMovement();
+        AssignInput();
+        
         UpdateHealthBar();
         TrackMovement();
         var hasShot = Input.GetMouseButtonDown(0);
@@ -77,11 +78,7 @@ public class Player : Entity {
 
     protected override void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.layer == ENEMY_BULLET_LAYER) {
-            Debug.Log($"Hit! Taking {other.gameObject.GetComponent<EnemyBullet>().damage} damage!");
             health -= other.gameObject.GetComponent<EnemyBullet>().damage;
-            Debug.Log($"Health now at {health}");
-        } else {
-            Debug.Log($"Hit by {other.gameObject.layer}");
         }
     }
 
@@ -90,11 +87,12 @@ public class Player : Entity {
         moveDelta = Vector3.zero;
         moveDelta = new Vector3(xMovement, yMovement, 0);
     }
-    
+
     protected override void Kill() {
         if (!IsAlive()) {
             Destroy(activeGun);
             Destroy(this);
+            deathText.gameObject.SetActive(true);
         }
         
         base.Kill();
