@@ -204,13 +204,13 @@ MonoBehaviour:
   health: 100
   damage: 10
   speed: 0.3
-  position: {x: 0, y: 0, z: 0}
-  repeatMovementRate: 2
   interpolationPeriod: 1
   deletePrefabTime: 3
   bloodVariance: 0.1
+  position: {x: 0, y: 0, z: 0}
   bloodPrefab: {fileID: 4391797801538248111, guid: 8a92215f2f9b15947842fcc78ce9723c, type: 3}
   cloudPrefab: {fileID: 5527735549709603703, guid: 1a8c65353f0cd0c42bcdb1d347671dfa, type: 3}
+  repeatMovementRate: 2
   deleteBlurbTime: 2
   deleteBlurbTextOffset: 0.05
   blurbParent: {fileID: 1910981429}
@@ -30288,7 +30288,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -30734,13 +30734,13 @@ MonoBehaviour:
   health: 100
   damage: 10
   speed: 0.3
-  position: {x: 0, y: 0, z: 0}
-  repeatMovementRate: 2
   interpolationPeriod: 1
   deletePrefabTime: 3
   bloodVariance: 0.1
+  position: {x: 0, y: 0, z: 0}
   bloodPrefab: {fileID: 4391797801538248111, guid: 8a92215f2f9b15947842fcc78ce9723c, type: 3}
   cloudPrefab: {fileID: 5527735549709603703, guid: 1a8c65353f0cd0c42bcdb1d347671dfa, type: 3}
+  repeatMovementRate: 2
   deleteBlurbTime: 2
   deleteBlurbTextOffset: 0.05
   blurbParent: {fileID: 842037624}
@@ -30776,7 +30776,7 @@ GameObject:
   - component: {fileID: 728797272}
   m_Layer: 0
   m_Name: Boss_0
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30815,7 +30815,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.010166839, y: -0.018044554}
+  m_Offset: {x: 0, y: -0.018044554}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -30841,17 +30841,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  damage: 10
-  speed: 0.3
-  position: {x: 0, y: 0, z: 0}
-  repeatMovementRate: 5
+  damage: 50
+  speed: 0.75
   interpolationPeriod: 1
   deletePrefabTime: 3
   bloodVariance: 0.1
+  position: {x: 0, y: 0, z: 0}
   bloodPrefab: {fileID: 4391797801538248111, guid: 8a92215f2f9b15947842fcc78ce9723c, type: 3}
   cloudPrefab: {fileID: 5527735549709603703, guid: 1a8c65353f0cd0c42bcdb1d347671dfa, type: 3}
+  repeatMovementRate: 1.5
   projectileSpeed: 1
-  maxProjectiles: 0
+  maxProjectiles: 5
   projectilePrefab: {fileID: 424937998833629723, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
 --- !u!4 &728797271
 Transform:
@@ -30861,7 +30861,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728797267}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.49489206, y: 3.495, z: -0.15909904}
+  m_LocalPosition: {x: 0.138, y: 3.461, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1441889926}
@@ -30882,9 +30882,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.26758373}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.7675837
+  m_Radius: 1.5
 --- !u!1 &808530876
 GameObject:
   m_ObjectHideFlags: 0
@@ -30899,7 +30899,7 @@ GameObject:
   - component: {fileID: 808530877}
   - component: {fileID: 808530881}
   - component: {fileID: 808530882}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Player_0
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -30947,7 +30947,12 @@ MonoBehaviour:
   health: 100
   damage: 25
   speed: 1
+  interpolationPeriod: 1
+  deletePrefabTime: 3
+  bloodVariance: 0.1
   position: {x: 0, y: 0, z: 0}
+  bloodPrefab: {fileID: 4391797801538248111, guid: 8a92215f2f9b15947842fcc78ce9723c, type: 3}
+  cloudPrefab: {fileID: 5527735549709603703, guid: 1a8c65353f0cd0c42bcdb1d347671dfa, type: 3}
   jump: 10
   bulletPrefab: {fileID: 2770020966280997780, guid: 83e5b39679dda554b8a272870c34a43b, type: 3}
   backGun: {fileID: 1446720984}
@@ -31012,7 +31017,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 808530876}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.69, y: -8.79, z: 0}
+  m_LocalPosition: {x: 0.16, y: 2.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 934962751}
@@ -31186,7 +31191,7 @@ GameObject:
   - component: {fileID: 915402936}
   - component: {fileID: 915402935}
   - component: {fileID: 915402934}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: NPCCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31454,13 +31459,13 @@ MonoBehaviour:
   health: 100
   damage: 10
   speed: 0.3
-  position: {x: 0, y: 0, z: 0}
-  repeatMovementRate: 2
   interpolationPeriod: 1
   deletePrefabTime: 3
   bloodVariance: 0.1
+  position: {x: 0, y: 0, z: 0}
   bloodPrefab: {fileID: 4391797801538248111, guid: 8a92215f2f9b15947842fcc78ce9723c, type: 3}
   cloudPrefab: {fileID: 5527735549709603703, guid: 1a8c65353f0cd0c42bcdb1d347671dfa, type: 3}
+  repeatMovementRate: 2
   deleteBlurbTime: 2
   deleteBlurbTextOffset: 0.05
   blurbParent: {fileID: 1953802870}
@@ -31491,7 +31496,7 @@ GameObject:
   m_Component:
   - component: {fileID: 934962751}
   - component: {fileID: 934962752}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GunFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31655,7 +31660,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1002847795}
   - component: {fileID: 1002847797}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31808,13 +31813,13 @@ MonoBehaviour:
   health: 100
   damage: 10
   speed: 0.3
-  position: {x: 0, y: 0, z: 0}
-  repeatMovementRate: 2
   interpolationPeriod: 1
   deletePrefabTime: 3
   bloodVariance: 0.1
+  position: {x: 0, y: 0, z: 0}
   bloodPrefab: {fileID: 4391797801538248111, guid: 8a92215f2f9b15947842fcc78ce9723c, type: 3}
   cloudPrefab: {fileID: 5527735549709603703, guid: 1a8c65353f0cd0c42bcdb1d347671dfa, type: 3}
+  repeatMovementRate: 2
   deleteBlurbTime: 2
   deleteBlurbTextOffset: 0.05
   blurbParent: {fileID: 1769726764}
@@ -32146,7 +32151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1446720985}
   - component: {fileID: 1446720986}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GunBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98892,60 +98897,3 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1001 &424937998512119391
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629720, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 424937998833629723, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}
-      propertyPath: m_Name
-      value: Fireball
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 00c6163105dacd74a9b4cd1cc63e5498, type: 3}

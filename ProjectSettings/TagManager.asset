@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Canvas
   - Blocking
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -21,8 +22,8 @@ TagManager:
   - Player
   - Bullet
   - NPCCollision
-  - 
-  - 
+  - Enemy
+  - EnemyBullet
   - 
   - 
   - 

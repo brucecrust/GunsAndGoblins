@@ -23,29 +23,37 @@ public class Enemy : NPC {
     // Update is called once per frame
     void Update() {
         RemoveProjectiles();
-        if (spawnedProjectiles.Count != 0 || spawnedProjectiles.Count < maxProjectiles) MoveProjectiles();
+        MoveProjectiles();
     }
 
+    private void OnTriggerStay2D(Collider2D other) {
+        if (other.transform.CompareTag("Player")) {
+            if (CanPrintProjectile()) PrintProjectile();
+        }
+    }
+
+    // -- Utility Methods --
     private void PrintProjectile() {
         var prefab = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         spawnedProjectiles.Add(prefab);
+        Destroy(prefab, deletePrefabTime);
     }
 
     private void MoveProjectiles() {
         foreach (var projectile in spawnedProjectiles) {
-            projectile.transform.position = Vector3.MoveTowards(position, player.transform.position, projectileSpeed);
+            if (projectile != null) {
+                projectile.transform.position = Vector3.MoveTowards(
+                    projectile.transform.position, player.transform.position, 
+                    projectileSpeed * Time.fixedDeltaTime);
+            }
         }
+    }
+
+    private bool CanPrintProjectile() {
+        return spawnedProjectiles.Count < maxProjectiles;
     }
 
     private void RemoveProjectiles() {
-        foreach (var projectile in spawnedProjectiles) {
-            if (projectile == null) spawnedProjectiles.Remove(projectile);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D other) {
-        if (!other.transform.CompareTag("Blocking")) return;
-        PrintProjectile();
-        MoveProjectiles();
+        if (spawnedProjectiles.Count > 0) spawnedProjectiles.RemoveAll(item => item == null);
     }
 }

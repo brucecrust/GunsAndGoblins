@@ -10,33 +10,14 @@ using Random = UnityEngine.Random;
 public class NPC : Entity {
     
     // -- Constants --
-    private const int BULLET_LAYER = 12;
     private const int BLOCKING_LAYER = 8;
     private const int ACTOR_LAYER = 9;
     
     // -- Variables --
     public float repeatMovementRate = 5;
-    public float interpolationPeriod = 1;
-    public float deletePrefabTime = 3;
-    public float bloodVariance = 0.1f;
-
-    private float time = 0.0f;
 
     protected bool moveRight;
     protected bool moveUp;
-    protected bool standStill = false;
-    protected bool wasShot = false;
-    protected bool printedBlood = false;
-    
-    private Vector3 shotPosition = Vector3.zero;
-    private List<GameObject> spawnedBlood = new List<GameObject>();
-
-    // -- Components --
-    public GameObject bloodPrefab;
-    public GameObject cloudPrefab;
-
-    private GameObject sprite;
-    private BoxCollider2D boxCollider2D;
 
     protected virtual void Start() {
         
@@ -44,43 +25,39 @@ public class NPC : Entity {
         damage = 10;
 
         InvokeRepeating("CalculateMovement", 0, repeatMovementRate);
-
-        boxCollider2D = GetComponent<BoxCollider2D>();
-
-        foreach (Transform child in transform) {
-            if (child.GetComponent<SpriteRenderer>() != null) {
-                sprite = child.gameObject;
-            }
-        }
     }
 
     // Update is called once per frame
     protected virtual void FixedUpdate() {
         base.FixedUpdate();
-        
-        if (wasShot) {
-            WasShot();
+
+        if (standStill) return;
+        if (IsAlive()) Move();
+    }    
+    
+    protected override void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.layer == BLOCKING_LAYER || other.gameObject.layer == ACTOR_LAYER) {
+            CalculateMovement();
         }
         
-        if (standStill) return;
-
-        ClearSpawnedBlood();
-        if (IsAlive()) Move();
-        Kill();
+        base.OnCollisionEnter2D(other);
     }
     
     // -- Public Methods --
-    void OnCollisionEnter2D(Collision2D other) {
-        // If layer is a bullet
-        if (other.gameObject.layer == BULLET_LAYER) {
-            wasShot = true;
-            shotPosition = other.contacts[0].point;
-            health -= other.gameObject.GetComponent<Bullet>().damage;
+    protected override void WasShot() {
+        Kill();
 
-        // if layer is blocking or an actor
-        } else if (other.gameObject.layer == BLOCKING_LAYER || other.gameObject.layer == ACTOR_LAYER) {
-            CalculateMovement();
-        }
+        if (!printedBlood) PrintBlood();
+
+        standStill = true;
+        moveRight = false;
+
+        CalculateTime();
+    }
+
+    protected override void CalculateTime() {
+        base.CalculateTime();
+        CalculateMovement();
     }
     
     // -- Parent Override Methods --
@@ -130,69 +107,6 @@ public class NPC : Entity {
                 standStill = true;
                 moveRight = false;
                 break;
-        }
-    }
-
-    protected void CalculateTime() {
-        time += Time.fixedDeltaTime;
-
-        if (!(time >= interpolationPeriod)) return;
-        
-        time = time - interpolationPeriod;
-        wasShot = false;
-        printedBlood = false;
-        standStill = false;
-        CalculateMovement();
-    }
-
-    protected virtual void WasShot() {
-        Kill();
-
-        if (!printedBlood) PrintBlood();
-
-        standStill = true;
-        moveRight = false;
-            
-        // Initiate timer; 
-        time += Time.fixedDeltaTime;
-            
-        CalculateTime();
-    }
-
-    protected virtual void PrintBlood() {
-        var positionVariant = new Vector3(Random.Range(0, bloodVariance), Random.Range(0, bloodVariance), 0);
-        var blood = Instantiate(bloodPrefab, shotPosition + positionVariant, Quaternion.identity);
-
-        spawnedBlood.Add(blood);
-        
-        blood.transform.parent = transform;
-        printedBlood = true;
-        
-        Destroy(blood, deletePrefabTime);
-    }
-
-    protected virtual GameObject PrintCloud() {
-        var prefab = Instantiate(cloudPrefab, position, Quaternion.identity);
-        prefab.transform.parent = transform;
-        return prefab;
-    }
-
-    protected override void Kill() {
-        if (health > 0) return;
-
-        foreach (var blood in spawnedBlood) {
-            if (blood != null) Destroy(blood);
-        }
-        
-        Destroy(boxCollider2D);
-        Destroy(PrintCloud(), deletePrefabTime);
-        sprite.SetActive(false);
-        Destroy(gameObject, deletePrefabTime);
-    }
-
-    private void ClearSpawnedBlood() {
-        foreach (var blood in spawnedBlood) {
-            if (blood == null) spawnedBlood.Remove(blood);
         }
     }
 }

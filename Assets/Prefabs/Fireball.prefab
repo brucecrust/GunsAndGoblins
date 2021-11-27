@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 424937998100475568}
   - component: {fileID: 424937998100475567}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Fireball_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,10 +92,10 @@ GameObject:
   m_Component:
   - component: {fileID: 424937998833629720}
   - component: {fileID: 424937998833629721}
-  - component: {fileID: 424937998833629722}
-  m_Layer: 0
+  - component: {fileID: -7475114517784565718}
+  m_Layer: 15
   m_Name: Fireball
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,24 +141,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.11254084, y: 0.1163919}
   m_EdgeRadius: 0
---- !u!50 &424937998833629722
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &-7475114517784565718
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 424937998833629723}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e741934ae622a4198310886b37c883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
