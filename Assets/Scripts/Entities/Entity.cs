@@ -21,7 +21,6 @@ public class Entity : BlurbObject {
     
     public Vector3 position;
 
-    protected bool canJump = false;
     protected bool printedBlood = false;
     protected bool printedCloud = false;
     protected bool standStill = false;
@@ -99,8 +98,6 @@ public class Entity : BlurbObject {
         printedBlood = false;
         standStill = false;
     }
-
-    protected virtual void Jump() { }
     
     protected virtual void Move() { }
 

@@ -16,9 +16,11 @@ public class Player : Entity {
 
     private bool displayedHealText = false;
     private float healTextTimer = 0.0f;
+    private bool inventoryOpen = false;
     private Vector3 moveDelta;
     private float xMovement;
     private float yMovement;
+    
     
     // -- Components --
     private Animator animator;
@@ -34,6 +36,7 @@ public class Player : Entity {
     public TextMeshProUGUI healText;
     public TextMeshProUGUI godModeText;
     public Slider healthBar;
+    public Inventory inventory;
 
     // Start is called before the first frame update
     protected override void Awake() {
@@ -71,8 +74,8 @@ public class Player : Entity {
     void Update() {
         AssessGodMode();
         CalculateTime();
-        
-        if (Input.GetKeyUp("space")) canJump = true;
+
+
         TrackMovement();
         AssignInput();
         
@@ -122,6 +125,10 @@ public class Player : Entity {
         healTextTimer -= healTextInterpolationPeriod;
         DeactivateHealText();
     }
+
+    private void CloseInventory() {
+        inventory.gameObject.SetActive(false);
+    }
     
     private void DeactivateGodMode() {
         godModeText.gameObject.SetActive(false);
@@ -130,6 +137,10 @@ public class Player : Entity {
     private void DeactivateHealText() {
         healText.gameObject.SetActive(false);
         displayedHealText = false;
+    }
+
+    private void HandleInput() {
+        
     }
     
     public void Heal() {
@@ -175,6 +186,10 @@ public class Player : Entity {
     
     protected override void Move() {
         rigidbody2D.MovePosition(transform.position + moveDelta * (speed * Time.fixedDeltaTime));
+    }
+
+    private void OpenInventory() {
+        inventory.gameObject.SetActive(true);
     }
     
     private void PrintBullet() {

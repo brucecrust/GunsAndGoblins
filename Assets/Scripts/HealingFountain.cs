@@ -23,7 +23,7 @@ public class HealingFountain : BlurbObject {
                 
                 hasHealed = true;
                 healPlayer = false;
-
+                
                 DeleteBlurb();
                 PrintBlurb(GetBlurb("NoHeal"));
             }
@@ -35,7 +35,6 @@ public class HealingFountain : BlurbObject {
         if (printedBlurb) return;
 
         PrintBlurb(hasHealed ? GetBlurb("NoHeal") : GetBlurb("Heal"));
-        printedBlurb = true;
     }
 
     void OnTriggerStay2D(Collider2D other) {
@@ -48,8 +47,7 @@ public class HealingFountain : BlurbObject {
 
    private void OnTriggerExit2D(Collider2D other) {
        if (!other.gameObject.CompareTag("Player")) return;
-       printedBlurb = false;
-       DeleteBlurb();
+       if (activeBlurb != null) DeleteBlurb();
    }
    
    // -- Utility Methods -- 
@@ -63,8 +61,6 @@ public class HealingFountain : BlurbObject {
    }
    
    protected override void PrintBlurb(Blurb blurbToCreate) {
-       if (activeBlurb != null) return;
-        
        activeBlurb = Instantiate(blurbToCreate.blurb, blurbParent.transform.position, Quaternion.identity);
        activeBlurb.transform.SetParent(canvas.transform, false);
         

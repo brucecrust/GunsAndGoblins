@@ -16,7 +16,7 @@ TextureImporter:
     second: Wall_Side_4
   - first:
       213: 159773604573254564
-    second: Wall_Side_
+    second: Wall_Side_4_2
   - first:
       213: -7156770024567284420
     second: Wall_Side_5
@@ -47,6 +47,9 @@ TextureImporter:
   - first:
       213: 8083393588257043402
     second: Wall_Size_14
+  - first:
+      213: -6786261603380023948
+    second: Door_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -232,7 +235,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Side_
+      name: Wall_Side_4_2
       rect:
         serializedVersion: 2
         x: 32
@@ -341,7 +344,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 54
-        y: 352
+        y: 353
         width: 10
         height: 18
       alignment: 0
@@ -361,7 +364,7 @@ TextureImporter:
       name: Wall_Side_10
       rect:
         serializedVersion: 2
-        x: 54
+        x: 53
         y: 337
         width: 10
         height: 15
@@ -408,7 +411,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -429,7 +432,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -450,7 +453,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -458,6 +461,27 @@ TextureImporter:
       bones: []
       spriteID: ac33bbf04abfd2070800000000000000
       internalID: 8083393588257043402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Door_0
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 256
+        width: 34
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47d29a1e60b52d1a0800000000000000
+      internalID: -6786261603380023948
       vertices: []
       indices: 
       edges: []
