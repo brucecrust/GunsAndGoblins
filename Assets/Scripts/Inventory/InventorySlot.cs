@@ -20,7 +20,7 @@ public class InventorySlot : MonoBehaviour {
         foreach (Transform child in transform) {
             if (child.CompareTag("InventoryButton")) {
                 selectionButton = child.GetComponent<Button>();
-                icon = child.GetChild(0).GetComponent<Image>();
+                if (child.childCount > 0) icon = child.GetChild(0).GetComponent<Image>();
             }
 
             if (child.CompareTag("InventoryRemoveButton")) deselectionButton = child.GetComponent<Button>();
@@ -29,6 +29,9 @@ public class InventorySlot : MonoBehaviour {
     
     // -- Utility Methods --
     public void AddItem(WorldItem worldItem) {
-        item = new InventoryItem(worldItem); 
+        item = new InventoryItem(worldItem);
+        Debug.Log($"Adding item: {item.worldItem.name}");
+        icon.sprite = item.worldItem.sideSprite;
+        icon.gameObject.SetActive(true);
     }
 }

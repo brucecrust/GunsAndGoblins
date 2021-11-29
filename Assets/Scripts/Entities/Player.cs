@@ -24,8 +24,8 @@ public class Player : Entity {
     private Animator animator;
     
     public GameObject activeGun;
-    public GameObject backGun;
     public GameObject bulletPrefab;
+    public GameObject backGun;
     public GameObject forwardGun;
     public GameObject sideGun;
     
@@ -153,23 +153,23 @@ public class Player : Entity {
 
         if (moveDelta.y > 0) {
             animator.SetBool(animationName, true);
-            sideGun.SetActive(false);
-            backGun.SetActive(true);
-            forwardGun.SetActive(false);
+            if (sideGun != null) sideGun.SetActive(false);
+            if (backGun != null) backGun.SetActive(true);
+            if (forwardGun != null) forwardGun.SetActive(false);
 
             activeGun = backGun;
         } else if (moveDelta.y < 0) {
             animator.SetBool(animationName, false);
-            sideGun.SetActive(false);
-            backGun.SetActive(false);
-            forwardGun.SetActive(true);
+            if (sideGun != null) sideGun.SetActive(false);
+            if (backGun != null) backGun.SetActive(false);
+            if (forwardGun != null) forwardGun.SetActive(true);
 
             activeGun = forwardGun;
         } else {
             animator.SetBool(animationName, false);
-            sideGun.SetActive(true);
-            backGun.SetActive(false);
-            forwardGun.SetActive(false);
+            if (sideGun != null) sideGun.SetActive(true);
+            if (backGun != null) backGun.SetActive(false);
+            if (forwardGun != null) forwardGun.SetActive(false);
 
             activeGun = sideGun;
         }

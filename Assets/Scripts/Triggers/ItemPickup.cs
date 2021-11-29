@@ -12,11 +12,12 @@ public class ItemPickup : Triggerable {
     // -- Components --
     public Inventory inventory;
 
-    private GameObject item;
+    private WorldItem item;
 
     void Start() {
         foreach (Transform child in transform) {
-            if (child.gameObject.layer == ITEM_LAYER) item = child.gameObject;
+            if (child.gameObject.layer == ITEM_LAYER) item = child.GetComponent<WorldItem>();
+            break;
         }
     }
     
@@ -24,7 +25,8 @@ public class ItemPickup : Triggerable {
         SetBlurbPosition();
         
         if (Input.GetKeyDown(KeyCode.E)) {
-            inventory.AddItem(gameObject);
+            inventory.AddItem(item);
+            Destroy(gameObject);
         }
     }
     
@@ -32,7 +34,7 @@ public class ItemPickup : Triggerable {
         if (!other.gameObject.CompareTag("Player")) return;
         if (printedBlurb) return;
 
-        PrintBlurb(hasHealed ? GetBlurb("NoHeal") : GetBlurb("Heal"));
+        PrintBlurb(GetBlurb("Item"));
     }
 
     protected override void OnTriggerStay2D(Collider2D other) {
