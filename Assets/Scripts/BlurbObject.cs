@@ -49,6 +49,7 @@ public class BlurbObject : WorldObject {
         
         activeBlurb = Instantiate(blurbToCreate.blurb, blurbParent.transform.position, Quaternion.identity);
         activeBlurb.transform.SetParent(canvas.transform, false);
+        activeBlurb.transform.SetAsFirstSibling();
         
         SetBlurbPosition();
 

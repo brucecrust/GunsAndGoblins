@@ -39,7 +39,8 @@ public class Triggerable : BlurbObject {
     protected override void PrintBlurb(Blurb blurbToCreate) {
         activeBlurb = Instantiate(blurbToCreate.blurb, blurbParent.transform.position, Quaternion.identity);
         activeBlurb.transform.SetParent(canvas.transform, false);
-        
+        activeBlurb.transform.SetAsFirstSibling();
+
         SetBlurbPosition();
     }
 }

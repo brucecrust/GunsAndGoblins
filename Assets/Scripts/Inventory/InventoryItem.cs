@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryItem {
-    
-    // -- Components --
-    public WorldItem worldItem;
-    
-    // -- Constructors --
-    public InventoryItem(WorldItem item) {
-        worldItem = item;
+public class InventoryItem : WorldItem {
+
+    // -- Utility Methods --
+    void Convert(WorldItem item) {
+        itemName = item.itemName;
+        backSprite = item.backSprite;
+        
     }
 }

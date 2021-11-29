@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class InventorySlot : MonoBehaviour {
    
     // -- Variables --
-    public bool containsItem;
+    public bool containsItem = false;
     public bool isHotSlot;
     
     // -- Components --
@@ -29,9 +29,10 @@ public class InventorySlot : MonoBehaviour {
     
     // -- Utility Methods --
     public void AddItem(WorldItem worldItem) {
-        item = new InventoryItem(worldItem);
-        Debug.Log($"Adding item: {item.worldItem.name}");
-        icon.sprite = item.worldItem.sideSprite;
+        item = worldItem.ToInventoryItem();
+        Debug.Log($"Item Received: {worldItem.itemName}");
+        Debug.Log($"Adding item: {item.itemName}");
+        icon.sprite = item.sideSprite;
         icon.gameObject.SetActive(true);
     }
 }

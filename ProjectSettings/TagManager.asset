@@ -16,6 +16,7 @@ TagManager:
   - InventoryItemParent
   - InventoryButton
   - InventoryRemoveButton
+  - WorldItem
   layers:
   - Default
   - TransparentFX
