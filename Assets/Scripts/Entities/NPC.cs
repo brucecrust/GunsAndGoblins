@@ -10,8 +10,8 @@ using Random = UnityEngine.Random;
 public class NPC : Entity {
     
     // -- Constants --
-    private const int BLOCKING_LAYER = 8;
     private const int ACTOR_LAYER = 9;
+    private const int BLOCKING_LAYER = 8;
     
     // -- Variables --
     public float repeatMovementRate = 2;
@@ -43,46 +43,7 @@ public class NPC : Entity {
         base.OnCollisionEnter2D(other);
     }
     
-    // -- Public Methods --
-    protected override void WasShot() {
-        Kill();
-
-        if (!printedBlood) PrintBlood();
-
-        standStill = true;
-        moveRight = false;
-
-        CalculateTime();
-    }
-
-    protected override void CalculateTime() {
-        base.CalculateTime();
-        CalculateMovement();
-    }
-    
-    // -- Parent Override Methods --
-    protected override void Move() {
-        // Horizontal:
-        if (moveRight && !moveUp) {
-            Rotate();
-            rigidbody2D.MovePosition(position + Vector3.right * (speed * Time.fixedDeltaTime));
-        } else if (!moveRight && !moveUp) {
-            Rotate();
-            rigidbody2D.MovePosition(position + Vector3.left * (speed * Time.fixedDeltaTime));
-            
-            // Vertical:
-        } else if (moveUp && !moveRight) {
-            rigidbody2D.MovePosition(position + Vector3.up * (speed * Time.fixedDeltaTime));
-        } else if (!moveUp && !moveRight) {
-            rigidbody2D.MovePosition(position + Vector3.down * (speed * Time.fixedDeltaTime));
-        }
-    }
-    
     // -- Utility Methods --
-    protected void Rotate() {
-        transform.localScale = moveRight ? Vector3.one : new Vector3(-1, 1, 1);
-    }
-
     protected void CalculateMovement() {
         // If 0, move right; if 1, move left; if 2, move up; if 3 move down; if 4, do nothing
         var movementDirection = Random.Range(0, 4);
@@ -108,5 +69,43 @@ public class NPC : Entity {
                 moveRight = false;
                 break;
         }
+    }
+    
+    protected override void CalculateTime() {
+        base.CalculateTime();
+        CalculateMovement();
+    }
+    
+    // -- Parent Override Methods --
+    protected override void Move() {
+        // Horizontal:
+        if (moveRight && !moveUp) {
+            Rotate();
+            rigidbody2D.MovePosition(position + Vector3.right * (speed * Time.fixedDeltaTime));
+        } else if (!moveRight && !moveUp) {
+            Rotate();
+            rigidbody2D.MovePosition(position + Vector3.left * (speed * Time.fixedDeltaTime));
+            
+            // Vertical:
+        } else if (moveUp && !moveRight) {
+            rigidbody2D.MovePosition(position + Vector3.up * (speed * Time.fixedDeltaTime));
+        } else if (!moveUp && !moveRight) {
+            rigidbody2D.MovePosition(position + Vector3.down * (speed * Time.fixedDeltaTime));
+        }
+    }
+
+    protected void Rotate() {
+        transform.localScale = moveRight ? Vector3.one : new Vector3(-1, 1, 1);
+    }
+
+    protected override void WasShot() {
+        Kill();
+
+        if (!printedBlood) PrintBlood();
+
+        standStill = true;
+        moveRight = false;
+
+        CalculateTime();
     }
 }

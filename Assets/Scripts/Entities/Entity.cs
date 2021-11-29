@@ -4,25 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Entity : MonoBehaviour {
+public class Entity : BlurbObject {
 
     // -- Constants --
     private const int BULLET_LAYER = 12;
 
     // -- Variables --
-    public float health = 100;
-    public float damage = 10;
-    public float speed = 0.3f;
-    public float interpolationPeriod = 1;
-    public float deletePrefabTime = 3;
     public float bloodVariance = 0.1f;
+    public float damage = 10;
+    public float deletePrefabTime = 3;
+    public float health = 100;
+    public float interpolationPeriod = 1;
+    public float speed = 0.3f;
 
+    public float initialHealth;
+    
     public Vector3 position;
 
-    protected bool wasShot = false;
     protected bool printedBlood = false;
     protected bool printedCloud = false;
     protected bool standStill = false;
+    protected bool wasShot = false;
 
     private Vector3 shotPosition = Vector3.zero;
     protected List<GameObject> spawnedBlood = new List<GameObject>();
@@ -30,8 +32,6 @@ public class Entity : MonoBehaviour {
     private float damageTimer = 0.0f;
 
     // -- Components --
-    protected Canvas canvas;
-    protected Camera camera;
     protected Rigidbody2D rigidbody2D;
     protected BoxCollider2D boxCollider2D;
     
@@ -40,11 +40,12 @@ public class Entity : MonoBehaviour {
     public GameObject cloudPrefab;
 
     // -- Life Cycle Methods --
-    protected virtual void Awake() {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+    protected override void Awake() {
+        base.Awake();
 
+        initialHealth = health;
+        
+        rigidbody2D = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
 
         foreach (Transform child in transform) {
@@ -72,18 +73,14 @@ public class Entity : MonoBehaviour {
     }
 
     // -- Utility Methods --
-    protected virtual void Move() { }
-
-    protected virtual void WasShot() {
-        Kill();
-
-        if (!printedBlood) PrintBlood();
-
-        standStill = true;
-
-        CalculateTime();
+    protected virtual void Heal() {
+        health = initialHealth;
     }
-
+    
+    protected virtual void Heal(float amount) {
+        health += amount;
+    }
+    
     protected virtual bool IsAlive() {
         return health > 0;
     }
@@ -101,7 +98,25 @@ public class Entity : MonoBehaviour {
         printedBlood = false;
         standStill = false;
     }
+    
+    protected virtual void Move() { }
 
+    protected virtual void Kill() {
+        if (health > 0) return;
+
+        foreach (var blood in spawnedBlood) {
+            if (blood != null) Destroy(blood);
+        }
+
+        Destroy(boxCollider2D);
+        if (!printedCloud) {
+            Destroy(PrintCloud(), deletePrefabTime);
+            printedCloud = true;
+        }
+        sprite.SetActive(false);
+        Destroy(gameObject, deletePrefabTime);
+    }
+    
     protected virtual void PrintBlood() {
         var positionVariant = new Vector3(Random.Range(0, bloodVariance), Random.Range(0, bloodVariance), 0);
         var blood = Instantiate(bloodPrefab, shotPosition + positionVariant, Quaternion.identity);
@@ -120,23 +135,17 @@ public class Entity : MonoBehaviour {
         return prefab;
     }
 
-    protected virtual void Kill() {
-        if (health > 0) return;
-
-        foreach (var blood in spawnedBlood) {
-            if (blood != null) Destroy(blood);
-        }
-
-        Destroy(boxCollider2D);
-        if (!printedCloud) {
-            Destroy(PrintCloud(), deletePrefabTime);
-            printedCloud = true;
-        }
-        sprite.SetActive(false);
-        Destroy(gameObject, deletePrefabTime);
-    }
-
     protected virtual void UpdatePosition() {
         position = transform.position;
+    }
+    
+    protected virtual void WasShot() {
+        Kill();
+
+        if (!printedBlood) PrintBlood();
+
+        standStill = true;
+
+        CalculateTime();
     }
 }

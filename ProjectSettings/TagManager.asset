@@ -8,6 +8,14 @@ TagManager:
   - Blocking
   - Enemy
   - Projectile
+  - InventoryItem
+  - InventoryGrid
+  - Magazine
+  - InventorySlot
+  - InventorySlotHot
+  - InventoryItemParent
+  - InventoryButton
+  - InventoryRemoveButton
   layers:
   - Default
   - TransparentFX
@@ -25,7 +33,7 @@ TagManager:
   - NPCCollision
   - Enemy
   - EnemyBullet
-  - 
+  - Item
   - 
   - 
   - 
@@ -53,4 +61,7 @@ TagManager:
     locked: 0
   - name: Design
     uniqueID: 999143211
+    locked: 0
+  - name: UI
+    uniqueID: 711893651
     locked: 0

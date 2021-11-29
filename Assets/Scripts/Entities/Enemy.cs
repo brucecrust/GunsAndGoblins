@@ -44,6 +44,7 @@ public class Enemy : NPC {
 
     private void OnTriggerStay2D(Collider2D other) {
         if (!other.transform.CompareTag("Player")) return;
+        if (other.GetComponent<Player>().godMode) return;
         
         if (numberOfProjectiles < maxProjectiles) canShoot = true;
     }

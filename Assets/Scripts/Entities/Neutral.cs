@@ -4,16 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Neutral : NPC {
-    
-    // -- Variables --
-    public float deleteBlurbTime = 2;
-    public float deleteBlurbTextOffset = 0.05f;
-
-    // -- Components --
-    public GameObject blurbParent;
-    public Image blurbOuch;
-    
-    private Image activeBlurb;
 
     protected override void Start() {
         InvokeRepeating("CalculateMovement", 0, repeatMovementRate);
@@ -44,36 +34,6 @@ public class Neutral : NPC {
     
     protected override void PrintBlood() {
         base.PrintBlood();
-        PrintOuchBlurb();
-    }
-
-    private void PrintOuchBlurb() {
-        if (activeBlurb != null) return;
-        
-        activeBlurb = Instantiate(blurbOuch, blurbParent.transform.position, Quaternion.identity);
-        activeBlurb.transform.SetParent(canvas.transform, false);
-        
-        SetBlurbPosition();
-
-        DeleteBlurb();
-    }
-
-    private void SetBlurbPosition() {
-        if (activeBlurb == null) return;
-        
-        Vector2 viewportPoint = camera.WorldToViewportPoint(blurbParent.transform.position);
-        activeBlurb.GetComponent<RectTransform>().anchorMin = viewportPoint;  
-        activeBlurb.GetComponent<RectTransform>().anchorMax = viewportPoint;
-    }
-
-    private void DeleteBlurb() {
-        var textDeleteTime = deleteBlurbTime - deleteBlurbTextOffset;
-
-        foreach (Transform child in activeBlurb.transform) {
-            // Delete children first
-            Destroy(child.gameObject, textDeleteTime);
-        }
-
-        Destroy(activeBlurb, deleteBlurbTime);
+        PrintBlurb(GetBlurb("Ouch"));
     }
 }
