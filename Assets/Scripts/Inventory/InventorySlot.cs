@@ -7,12 +7,14 @@ using UnityEngine.UI;
 public class InventorySlot : MonoBehaviour {
    
     // -- Variables --
+    public bool containsItem;
     public bool isHotSlot;
     
     // -- Components --
-    public Button selectionButton;
-    public Button deselectionButton;
-    public Image icon;
+    private Button selectionButton;
+    private Button deselectionButton;
+    private Image icon;
+    private InventoryItem item;
 
     private void Start() {
         foreach (Transform child in transform) {
@@ -23,5 +25,10 @@ public class InventorySlot : MonoBehaviour {
 
             if (child.CompareTag("InventoryRemoveButton")) deselectionButton = child.GetComponent<Button>();
         }
+    }
+    
+    // -- Utility Methods --
+    public void AddItem(WorldItem worldItem) {
+        item = new InventoryItem(worldItem); 
     }
 }

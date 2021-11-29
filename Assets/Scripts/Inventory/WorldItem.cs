@@ -5,7 +5,9 @@ using UnityEngine;
 public class WorldItem : MonoBehaviour {
     
     // -- Components --
-    public Sprite sprite;
+    public SpriteRenderer frontSprite;
+    public SpriteRenderer backSprite;
+    public SpriteRenderer sideSprite;
     
     // Start is called before the first frame update
     void Start() {

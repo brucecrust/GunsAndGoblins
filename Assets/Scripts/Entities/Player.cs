@@ -16,12 +16,10 @@ public class Player : Entity {
 
     private bool displayedHealText = false;
     private float healTextTimer = 0.0f;
-    private bool inventoryOpen = false;
     private Vector3 moveDelta;
     private float xMovement;
     private float yMovement;
-    
-    
+
     // -- Components --
     private Animator animator;
     
@@ -75,6 +73,7 @@ public class Player : Entity {
         AssessGodMode();
         CalculateTime();
 
+        if (ModifyInventory()) inventory.Activate();
 
         TrackMovement();
         AssignInput();
@@ -102,7 +101,7 @@ public class Player : Entity {
         healText.gameObject.SetActive(true);
         displayedHealText = true;
     }
-
+    
     private void AssessGodMode() {
         if (godMode) ActivateGodMode();
         else DeactivateGodMode();
@@ -126,10 +125,6 @@ public class Player : Entity {
         DeactivateHealText();
     }
 
-    private void CloseInventory() {
-        inventory.gameObject.SetActive(false);
-    }
-    
     private void DeactivateGodMode() {
         godModeText.gameObject.SetActive(false);
     }
@@ -137,10 +132,6 @@ public class Player : Entity {
     private void DeactivateHealText() {
         healText.gameObject.SetActive(false);
         displayedHealText = false;
-    }
-
-    private void HandleInput() {
-        
     }
     
     public void Heal() {
@@ -184,14 +175,14 @@ public class Player : Entity {
         }
     }
     
+    private bool ModifyInventory() {
+        return Input.GetKeyUp(KeyCode.Tab);
+    }
+    
     protected override void Move() {
         rigidbody2D.MovePosition(transform.position + moveDelta * (speed * Time.fixedDeltaTime));
     }
 
-    private void OpenInventory() {
-        inventory.gameObject.SetActive(true);
-    }
-    
     private void PrintBullet() {
         var prefab = Instantiate(bulletPrefab, position, Quaternion.identity);
         var mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
